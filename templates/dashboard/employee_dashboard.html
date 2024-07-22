@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/employee_dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="../../static/img/favicon.png">
+    <link rel="stylesheet" href="../../static/css/loader.css">
+    <title>LMS | Dashboard</title>
+</head>
+<body>
+    <div id="preloader" class="loader-container">
+        <div class="loader"></div>
+    </div>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-user-voice'></i>
+            <span class="text">{{ employee.firstname }} {{ employee.lastname }}</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="/user/profile">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="/leave/apply">
+                    <i class='bx bxs-group' ></i>
+                    <span class="text">Apply Leave</span>
+                </a>
+            </li>
+            <li>
+                <a href="/leave/status">
+                    <i class='bx bxs-bar-chart-alt-2' ></i>
+                    <span class="text">My Leaves</span>
+                </a>
+            </li>
+            <li>
+                <a href="/user/update">
+                    <i class='bx bxs-report' ></i>
+                    <span class="text">Change Password</span>
+                </a>
+            </li>
+        </ul>
+
+
+
+            <ul class="side-menu">
+            <li>
+                <a href="" class="logout" onclick="logout()">
+                    <i class='bx bx-log-out-circle' ></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+<!-- SIDEBAR -->
+
+
+<!-- CONTENT -->
+
+<section id="content">
+
+    <!-- NAVBAR -->
+    <nav>
+        <i class='bx bx-menu' ></i>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+            </div>
+        </form>
+        <a href="" class="profile">
+        <img src="https://images.pexels.com/photos/10850674/pexels-photo-10850674.jpeg?cs=srgb&dl=pexels-abel-kayode-155872537-10850674.jpg&fm=jpg&w=640&h=640" alt="">
+        </a>
+    </nav>
+
+
+    <!-- NAVBAR -->
+<!-- MAIN -->
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="#">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <ul class="box-info">
+        <li>
+            <i class='bx bxs-calendar-check' ></i>
+            <span class="text">
+                <h3>{{ employee.pending }}</h3>
+                <p>Pending</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-user-check'></i>
+            <span class="text">
+                <h3>{{ employee.approved }}</h3>
+                <p>Approved</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-x-circle'></i>
+                <span class="text">
+                <h3>{{ employee.rejected }}</h3>
+                <p>Rejected</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-receipt'></i>
+                <span class="text">
+                <h3>{{ employee.total }}</h3>
+                <p>Total</p>
+            </span>
+        </li>
+    </ul>
+
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Snapshot</h3>
+                <i class='bx bx-search' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in applications %}
+                        <tr>
+                            <td>
+                                <img src="https://images.pexels.com/photos/10850674/pexels-photo-10850674.jpeg?cs=srgb&dl=pexels-abel-kayode-155872537-10850674.jpg&fm=jpg&w=640&h=640">
+                                <p>{{ employee.firstname }} {{ employee.lastname }}</p>
+                            </td>
+                            <td>{{ item.start }}</td>
+                            <td>{{ item.end }}</td>
+                            <td>
+                                <span class="status {% if item.status == 'pending' %}pending{% elif item.status == 'approved' %}approved{% elif item.status == 'rejected' %}rejected{% endif %}">
+                                    {{ item.status.capitalize() }}
+                                </span>
+                            </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<!-- MAIN -->
+</section>
+<script src="../../static/js/dashboard.js"></script>
+ <script>
+    var loader = document.getElementById("preloader");
+
+    window.addEventListener("load", function() {
+        loader.style.display = "none";
+    });
+</script>
+<script>
+        function logout(){
+            const loader = document.getElementById("preloader");
+            loader.style.display = "flex";
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token() }}",
+                },
+                redirect: 'follow'
+            };
+            fetch("/auth/logout", requestOptions)
+              .then(response => {
+                  if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.error || "Something went wrong");
+                        });
+                        }
+                  return response.json();
+              })
+              .then(data => {
+                  console.log(data.message)
+                  return window.location.href = '/';
+              })
+              .catch(error => console.log('error', error));
+            loader.style.display = "none";
+            }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+__pycache__
+.env
+dump.rdb
+error.log
+Procfile
+manage.py
